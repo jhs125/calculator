@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Construction Loan Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .calculator {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            margin: auto; /* Center the container */
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #217dbb;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .reset-button {
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .reset-button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="calculator">
+        <h1>Construction Loan Calculator</h1>
+
+        <label for="loanAmount">Loan Amount:</label>
+        <input type="number" id="loanAmount" placeholder="Enter loan amount" required>
+
+        <label for="interestRate">Interest Rate (%):</label>
+        <input type="number" id="interestRate" placeholder="Enter interest rate" required>
+
+        <label for="constructionPeriod">Construction Period (months):</label>
+        <input type="number" id="constructionPeriod" placeholder="Enter construction period" required>
+
+        <label for="landCost">Land Cost (optional):</label>
+        <input type="number" id="landCost" placeholder="Enter land cost">
+
+        <label for="currency">Select Currency:</label>
+        <select id="currency">
+            <option value="USD" selected>US Dollar (USD)</option>
+            <option value="EUR">Euro (EUR)</option>
+            <option value="JPY">Japanese Yen (JPY)</option>
+            <option value="GBP">British Pound (GBP)</option>
+            <option value="AUD">Australian Dollar (AUD)</option>
+            <option value="CAD">Canadian Dollar (CAD)</option>
+            <option value="CHF">Swiss Franc (CHF)</option>
+            <option value="CNY">Chinese Yuan (CNY)</option>
+            <option value="SEK">Swedish Krona (SEK)</option>
+            <option value="NZD">New Zealand Dollar (NZD)</option>
+        </select>
+
+        <button onclick="calculateLoan()">Calculate Loan</button>
+
+        <div id="result"></div>
+
+        <button class="reset-button" onclick="resetCalculator()">Reset Calculator</button>
+    </div>
+
+    <script>
+        function calculateLoan() {
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            const interestRate = parseFloat(document.getElementById('interestRate').value) / 100;
+            const constructionPeriod = parseInt(document.getElementById('constructionPeriod').value);
+            const landCost = parseFloat(document.getElementById('landCost').value) || 0;
+            const selectedCurrency = document.getElementById('currency').value;
+
+            // Convert loan amount and land cost to selected currency if needed
+            const convertedLoanAmount = convertCurrency(loanAmount, 'USD', selectedCurrency);
+            const convertedLandCost = convertCurrency(landCost, 'USD', selectedCurrency);
+
+            // Calculate monthly interest rate
+            const monthlyInterestRate = interestRate / 12;
+
+            // Calculate monthly loan payment without land cost
+            const monthlyPaymentWithoutLand = (convertedLoanAmount * monthlyInterestRate) /
+                (1 - Math.pow(1 + monthlyInterestRate, -constructionPeriod));
+
+            // Calculate total loan amount with land cost
+            const totalLoanAmount = convertedLoanAmount + convertedLandCost;
+
+            // Calculate total loan payment with land cost
+            const totalPaymentWithLand = monthlyPaymentWithoutLand * constructionPeriod;
+
+            // Display the result with conversion rate
+            const conversionRate = getConversionRate('USD', selectedCurrency);
+            document.getElementById('result').innerHTML = `<p>Total Loan Amount with Land: ${selectedCurrency} ${totalLoanAmount.toFixed(2)}</p>
+                                                           <p>Total Payment with Land: ${selectedCurrency} ${totalPaymentWithLand.toFixed(2)}</p>
+                                                           <p>Conversion Rate: 1 USD = ${conversionRate.toFixed(4)} ${selectedCurrency}</p>`;
+        }
+
+        function resetCalculator() {
+            document.getElementById('loanAmount').value = "";
+            document.getElementById('interestRate').value = "";
+            document.getElementById('constructionPeriod').value = "";
+            document.getElementById('landCost').value = "";
+            document.getElementById('currency').value = "USD";
+            document.getElementById('result').innerHTML = "";
+        }
+
+        function convertCurrency(amount, fromCurrency, toCurrency) {
+            // You would typically fetch the latest exchange rates from an API
+            // For simplicity, we'll use a fixed conversion rate for this example
+            const conversionRates = {
+                USD: 1,
+                EUR: 0.85, // Example conversion rate
+                JPY: 110.14, // Example conversion rate
+                GBP: 0.75, // Example conversion rate
+                AUD: 1.32, // Example conversion rate
+                CAD: 1.28, // Example conversion rate
+                CHF: 0.91, // Example conversion rate
+                CNY: 6.44, // Example conversion rate
+                SEK: 8.57, // Example conversion rate
+                NZD: 1.43 // Example conversion rate
+                // Add more conversion rates as needed
+            };
+
+            const convertedAmount = amount * (conversionRates[toCurrency] / conversionRates[fromCurrency]);
+            return convertedAmount;
+        }
+
+        function getConversionRate(fromCurrency, toCurrency) {
+            // You would typically fetch the latest exchange rates from an API
+            // For simplicity, we'll use a fixed conversion rate for this example
+            const conversionRates = {
+                USD: 1,
+                EUR: 0.85, // Example conversion rate
+                JPY: 110.14, // Example conversion rate
+                GBP: 0.75, // Example conversion rate
+                AUD: 1.32, // Example conversion rate
+                CAD: 1.28, // Example conversion rate
+                CHF: 0.91, // Example conversion rate
+                CNY: 6.44, // Example conversion rate
+                SEK: 8.57, // Example conversion rate
+                NZD: 1.43 // Example conversion rate
+                // Add more conversion rates as needed
+            };
+
+            const conversionRate = conversionRates[toCurrency] / conversionRates[fromCurrency];
+            return conversionRate;
+        }
+    </script>
+
+</body>
+
+</html>
