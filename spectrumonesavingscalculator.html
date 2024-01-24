@@ -86,6 +86,21 @@
         .reset-button:hover {
             background-color: #c0392b;
         }
+
+        .provided-by {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .provided-by a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .provided-by a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -111,8 +126,11 @@
         <div id="result"></div>
 
         <button class="reset-button" onclick="resetCalculator()">Reset Calculator</button>
-    </div>
 
+        <div class="provided-by">
+            Provided by <a href="https://moneyjiggs.com" target="_blank">Moneyjiggs.com</a>
+        </div>
+    </div>
     <script>
         function calculateSavings() {
             const initialAmount = parseFloat(document.getElementById('initialAmount').value);
