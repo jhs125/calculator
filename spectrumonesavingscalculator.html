@@ -117,19 +117,41 @@
         function calculateSavings() {
             const initialAmount = parseFloat(document.getElementById('initialAmount').value);
             const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value);
-            const interestRate = parseFloat(document.getElementById('interestRate').value) / 100;
+            const annualInterestRate = parseFloat(document.getElementById('interestRate').value);
             const investmentPeriod = parseInt(document.getElementById('investmentPeriod').value);
 
-            let totalSavings = initialAmount;
-            let monthlyInterestRate = interestRate / 12;
+            const monthlyInterestRate = (annualInterestRate / 100) / 12;
+            const totalMonths = investmentPeriod * 12;
 
-            for (let i = 0; i < investmentPeriod * 12; i++) {
-                totalSavings += monthlyContribution;
-                totalSavings *= 1 + monthlyInterestRate;
+            let futureValue = initialAmount;
+            let annualValue = 0;
+            let perMonthValues = [];
+
+            for (let i = 0; i < totalMonths; i++) {
+                futureValue = (futureValue + monthlyContribution) * (1 + monthlyInterestRate);
+
+                if ((i + 1) % 12 === 0) {
+                    // At the end of each year
+                    annualValue = futureValue - initialAmount - (monthlyContribution * 12);
+                }
+
+                perMonthValues.push(futureValue);
             }
 
-            const formattedSavings = totalSavings.toFixed(2);
-            document.getElementById('result').innerHTML = `<p>Total Savings: $${formattedSavings}</p>`;
+            const formattedFutureValue = futureValue.toFixed(2);
+            const formattedAnnualValue = annualValue.toFixed(2);
+            const formattedPerMonthValues = perMonthValues.map(value => value.toFixed(2));
+
+            const resultHtml = `
+                <p>Future Value: $${formattedFutureValue}</p>
+                <p>Annual Value: $${formattedAnnualValue}</p>
+                <p>Per Month Values:</p>
+                <ul>
+                    ${formattedPerMonthValues.map(value => `<li>$${value}</li>`).join('')}
+                </ul>
+            `;
+
+            document.getElementById('result').innerHTML = resultHtml;
         }
 
         function resetCalculator() {
