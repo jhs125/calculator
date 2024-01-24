@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,238 +8,139 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
-        h2 {
+        .calculator {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            margin: auto; /* Center the container */
+        }
+
+        h1 {
             color: #333;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #333;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
         }
 
         input {
             width: 100%;
             padding: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 4px;
-            box-sizing: border-box;
+            font-size: 16px;
         }
 
         button {
-            padding: 15px;
-            background-color: #4CAF50;
-            color: white;
+            background-color: #3498db;
+            color: #fff;
+            padding: 12px 20px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            margin-right: 10px;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #217dbb;
         }
 
         #result {
-            margin-top: 20px;
+            margin-top: 30px;
+            font-size: 18px;
             font-weight: bold;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            padding: 20px;
-            background-color: #fff;
-        }
-
-        #result p {
-            margin: 0;
-        }
-    </style>
-</head>
-<body>
-
-    <h2>Spectrum One Savings Calculator</h2>
-
-    <label for="initialAmount">Initial Savings Amount:</label>
-    <input type="number" id="initialAmount" placeholder="Enter initial amount">
-
-    <label for="monthlyContribution">Monthly Contribution:</label>
-    <input type="number" id="monthlyContribution" placeholder="Enter monthly contribution">
-
-    <label for="interestRate">Annual Interest Rate (%):</label>
-    <input type="number" id="interestRate" placeholder="Enter annual interest rate">
-
-    <label for="numberOfYears">Number of Years:</label>
-    <input type="number" id="numberOfYears" placeholder="Enter number of years">
-
-    <button onclick="calculateSavings()">Calculate</button>
-
-    <div id="result"></div>
-
-    <script>
-        function calculateSavings() {
-            var initialAmount = parseFloat(document.getElementById('initialAmount').value);
-            var monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value);
-            var interestRate = parseFloat(document.getElementById('interestRate').value);
-            var numberOfYears = parseFloat(document.getElementById('numberOfYears').value);
-
-            var monthlyInterestRate = interestRate / 100 / 12;
-            var totalMonths = numberOfYears * 12;
-
-            var futureValue = initialAmount * Math.pow(1 + monthlyInterestRate, totalMonths) +
-                              monthlyContribution * ((Math.pow(1 + monthlyInterestRate, totalMonths) - 1) / monthlyInterestRate);
-
-            var annualValue = futureValue / numberOfYears;
-            var monthlyValue = futureValue / totalMonths;
-
-            // Calculate and display values for each of the 12 months in the first year
-            var monthlyValuesInFirstYear = [];
-            for (var i = 0; i < 12; i++) {
-                var monthValue = (initialAmount * Math.pow(1 + monthlyInterestRate, i)) +
-                                 (monthlyContribution * ((Math.pow(1 + monthlyInterestRate, i) - 1) / monthlyInterestRate));
-                monthlyValuesInFirstYear.push(monthValue);
-            }
-
-            var resultHTML =
-                "<p>Future Value of Savings: $" + futureValue.toFixed(2) + "</p>" +
-                "<p>Annual Value of Savings: $" + annualValue.toFixed(2) + "</p>" +
-                "<p>Per Month Value of Savings: $" + monthlyValue.toFixed(2) + "</p>" +
-                "<br>Values for each of the 12 months in the first year:<br>";
-
-            monthlyValuesInFirstYear.forEach(function (value, index) {
-                resultHTML += "<p>Month " + (index + 1) + ": $" + value.toFixed(2) + "</p>";
-            });
-
-            document.getElementById('result').innerHTML = resultHTML;
-        }
-    </script>
-
-</body>
-</html>
-
-====================================
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spectrum One Savings Calculator</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-        }
-
-        h2 {
             color: #333;
         }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        button {
-            padding: 15px;
-            background-color: #4CAF50;
-            color: white;
+        .reset-button {
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 12px 20px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            margin-top: 10px;
         }
 
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            padding: 20px;
-            background-color: #fff;
-        }
-
-        #result p {
-            margin: 0;
+        .reset-button:hover {
+            background-color: #c0392b;
         }
     </style>
 </head>
+
 <body>
 
-    <h2>Spectrum One Savings Calculator</h2>
+    <div class="calculator">
+        <h1>Spectrum One Savings Calculator</h1>
 
-    <label for="initialAmount">Initial Savings Amount:</label>
-    <input type="number" id="initialAmount" placeholder="Enter initial amount">
+        <label for="initialAmount">Initial Amount:</label>
+        <input type="number" id="initialAmount" placeholder="Enter initial amount" required>
 
-    <label for="monthlyContribution">Monthly Contribution:</label>
-    <input type="number" id="monthlyContribution" placeholder="Enter monthly contribution">
+        <label for="monthlyContribution">Monthly Contribution:</label>
+        <input type="number" id="monthlyContribution" placeholder="Enter monthly contribution" required>
 
-    <label for="interestRate">Annual Interest Rate (%):</label>
-    <input type="number" id="interestRate" placeholder="Enter annual interest rate">
+        <label for="interestRate">Annual Interest Rate (%):</label>
+        <input type="number" id="interestRate" placeholder="Enter annual interest rate" required>
 
-    <label for="numberOfYears">Number of Years:</label>
-    <input type="number" id="numberOfYears" placeholder="Enter number of years">
+        <label for="investmentPeriod">Investment Period (years):</label>
+        <input type="number" id="investmentPeriod" placeholder="Enter investment period" required>
 
-    <button onclick="calculateSavings()">Calculate</button>
+        <button onclick="calculateSavings()">Calculate Savings</button>
 
-    <div id="result"></div>
+        <div id="result"></div>
+
+        <button class="reset-button" onclick="resetCalculator()">Reset Calculator</button>
+    </div>
 
     <script>
         function calculateSavings() {
-            var initialAmount = parseFloat(document.getElementById('initialAmount').value);
-            var monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value);
-            var interestRate = parseFloat(document.getElementById('interestRate').value);
-            var numberOfYears = parseFloat(document.getElementById('numberOfYears').value);
+            const initialAmount = parseFloat(document.getElementById('initialAmount').value);
+            const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value);
+            const interestRate = parseFloat(document.getElementById('interestRate').value) / 100;
+            const investmentPeriod = parseInt(document.getElementById('investmentPeriod').value);
 
-            var monthlyInterestRate = interestRate / 100 / 12;
-            var totalMonths = numberOfYears * 12;
+            let totalSavings = initialAmount;
+            let monthlyInterestRate = interestRate / 12;
 
-            var futureValue = initialAmount * Math.pow(1 + monthlyInterestRate, totalMonths) +
-                              monthlyContribution * ((Math.pow(1 + monthlyInterestRate, totalMonths) - 1) / monthlyInterestRate);
-
-            var annualValue = futureValue / numberOfYears;
-            var monthlyValue = futureValue / totalMonths;
-
-            // Calculate and display values for each of the 12 months in the first year
-            var monthlyValuesInFirstYear = [];
-            for (var i = 0; i < 12; i++) {
-                var monthValue = (initialAmount * Math.pow(1 + monthlyInterestRate, i)) +
-                                 (monthlyContribution * ((Math.pow(1 + monthlyInterestRate, i) - 1) / monthlyInterestRate));
-                monthlyValuesInFirstYear.push(monthValue);
+            for (let i = 0; i < investmentPeriod * 12; i++) {
+                totalSavings += monthlyContribution;
+                totalSavings *= 1 + monthlyInterestRate;
             }
 
-            var resultHTML =
-                "<p>Future Value of Savings: $" + futureValue.toFixed(2) + "</p>" +
-                "<p>Annual Value of Savings: $" + annualValue.toFixed(2) + "</p>" +
-                "<p>Per Month Value of Savings: $" + monthlyValue.toFixed(2) + "</p>" +
-                "<br>Values for each of the 12 months in the first year:<br>";
+            const formattedSavings = totalSavings.toFixed(2);
+            document.getElementById('result').innerHTML = `<p>Total Savings: $${formattedSavings}</p>`;
+        }
 
-            monthlyValuesInFirstYear.forEach(function (value, index) {
-                resultHTML += "<p>Month " + (index + 1) + ": $" + value.toFixed(2) + "</p>";
-            });
-
-            document.getElementById('result').innerHTML = resultHTML;
+        function resetCalculator() {
+            document.getElementById('initialAmount').value = "";
+            document.getElementById('monthlyContribution').value = "";
+            document.getElementById('interestRate').value = "";
+            document.getElementById('investmentPeriod').value = "";
+            document.getElementById('result').innerHTML = "";
         }
     </script>
 
 </body>
-</html>
 
-====================================
+</html>
