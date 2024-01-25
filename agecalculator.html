@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            text-align: left;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #resetButton {
+            background-color: #f44336;
+        }
+
+        #resetButton:hover {
+            background-color: #d32f2f;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Age Calculator</h1>
+    <form id="ageCalculatorForm">
+        <label for="dob">Date of Birth:</label>
+        <input type="text" id="dob" class="datepicker" required>
+
+        <label for="ageDate">Age at the Date of:</label>
+        <input type="text" id="ageDate" class="datepicker" required>
+
+        <button type="button" onclick="calculateAge()">Calculate Age</button>
+        <button type="button" id="resetButton" onclick="resetForm()">Reset</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/flatpickr.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var datepickers = document.querySelectorAll('.datepicker');
+            datepickers.forEach(function (datepicker) {
+                flatpickr(datepicker, {
+                    dateFormat: 'm/d/Y',
+                });
+            });
+        });
+
+        function calculateAge() {
+            var dobInput = document.getElementById('dob').value;
+            var ageDateInput = document.getElementById('ageDate').value;
+
+            var dob = new Date(dobInput);
+            var ageDate = new Date(ageDateInput);
+
+            var age = dateFns.differenceInMilliseconds(ageDate, dob);
+            var ageObject = dateFns.duration(age);
+
+            var result = `
+                <h2>Result</h2>
+                <p>Age:</p>
+                <ul>
+                    <li>${ageObject.years} years ${ageObject.months} months ${ageObject.days} days</li>
+                    <li>${ageObject.months * 12 + ageObject.days} months ${ageObject.days} days</li>
+                    <li>${ageObject.weeks} weeks ${ageObject.days} days</li>
+                    <li>${ageObject.days} days</li>
+                    <li>${ageObject.hours} hours</li>
+                    <li>${ageObject.minutes} minutes</li>
+                    <li>${ageObject.seconds} seconds</li>
+                </ul>
+            `;
+
+            document.getElementById('result').innerHTML = result;
+        }
+
+        function resetForm() {
+            document.getElementById('ageCalculatorForm').reset();
+            document.getElementById('result').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
