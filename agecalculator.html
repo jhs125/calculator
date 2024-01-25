@@ -70,6 +70,7 @@
             margin-top: 20px;
             font-size: 18px;
             color: #333;
+            text-align: left;
         }
     </style>
 </head>
@@ -77,10 +78,10 @@
     <h1>Age Calculator</h1>
     <form id="ageCalculatorForm">
         <label for="dob">Date of Birth:</label>
-        <input type="text" id="dob" class="datepicker" required>
+        <input type="date" id="dob" required>
 
         <label for="ageDate">Age at the Date of:</label>
-        <input type="text" id="ageDate" class="datepicker" required>
+        <input type="date" id="ageDate" required>
 
         <button type="button" onclick="calculateAge()">Calculate Age</button>
         <button type="button" id="resetButton" onclick="resetForm()">Reset</button>
@@ -88,17 +89,7 @@
 
     <div id="result"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/flatpickr.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var datepickers = document.querySelectorAll('.datepicker');
-            datepickers.forEach(function (datepicker) {
-                flatpickr(datepicker, {
-                    dateFormat: 'm/d/Y',
-                });
-            });
-        });
-
         function calculateAge() {
             var dobInput = document.getElementById('dob').value;
             var ageDateInput = document.getElementById('ageDate').value;
@@ -106,20 +97,30 @@
             var dob = new Date(dobInput);
             var ageDate = new Date(ageDateInput);
 
-            var age = dateFns.differenceInMilliseconds(ageDate, dob);
-            var ageObject = dateFns.duration(age);
+            // Check if both dates are valid
+            if (isNaN(dob.getTime()) || isNaN(ageDate.getTime())) {
+                alert('Please enter valid dates.');
+                return;
+            }
+
+            var ageMilliseconds = ageDate - dob;
+            var ageSeconds = ageMilliseconds / 1000;
+            var ageMinutes = ageSeconds / 60;
+            var ageHours = ageMinutes / 60;
+            var ageDays = ageHours / 24;
+            var ageMonths = (ageDays / 30.44).toFixed(2);
+            var ageYears = (ageDays / 365.25).toFixed(2);
 
             var result = `
                 <h2>Result</h2>
                 <p>Age:</p>
                 <ul>
-                    <li>${ageObject.years} years ${ageObject.months} months ${ageObject.days} days</li>
-                    <li>${ageObject.months * 12 + ageObject.days} months ${ageObject.days} days</li>
-                    <li>${ageObject.weeks} weeks ${ageObject.days} days</li>
-                    <li>${ageObject.days} days</li>
-                    <li>${ageObject.hours} hours</li>
-                    <li>${ageObject.minutes} minutes</li>
-                    <li>${ageObject.seconds} seconds</li>
+                    <li>${ageYears} years</li>
+                    <li>${ageMonths} months</li>
+                    <li>${Math.floor(ageDays)} days</li>
+                    <li>${Math.floor(ageHours)} hours</li>
+                    <li>${Math.floor(ageMinutes)} minutes</li>
+                    <li>${Math.floor(ageSeconds)} seconds</li>
                 </ul>
             `;
 
